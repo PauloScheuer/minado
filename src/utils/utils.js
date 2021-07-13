@@ -85,8 +85,9 @@ const clearNearFields = (matrix, m, n) => {
     let j = -1;
     while (j < 2) {
       if (m + i >= 0 && n + j >= 0 && m + i <= rows && n + j <= columns) {
-        if (matrix[m + i][n + j].hasBomb === false &&
-          matrix[m + i][n + j].opened === false) {
+        if (!matrix[m + i][n + j].hasBomb &&
+          !matrix[m + i][n + j].opened &&
+          !matrix[m + i][n + j].flagged) {
           matrix[m + i][n + j].opened = true;
           matrix[m + i][n + j].number = findNearBombs(matrix, m + i, n + j);
           if (matrix[m + i][n + j].number === 0) {

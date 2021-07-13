@@ -20,24 +20,28 @@ const App = () => {
 
   const handleOpenField = (m, n) => {
     const newMatrix = [...matrix];
-    newMatrix[m][n].opened = true;
     if (newMatrix[m][n].hasBomb) {
       newMatrix[m][n].exploded = true;
       handleLose();
     } else {
+      if (newMatrix[m][n].flagged) handlePutFlag(m, n);
       newMatrix[m][n].number = findNearBombs(newMatrix, m, n);
       if (newMatrix[m][n].number === 0) {
         clearNearFields(newMatrix, m, n);
       }
     }
+    newMatrix[m][n].opened = true;
     setMatrix(newMatrix);
   }
 
   const handlePutFlag = (m, n) => {
     const newMatrix = [...matrix];
-    if (newMatrix[m][n].flagged === false) {
+    if (newMatrix[m][n].opened) {
+      return;
+    }
+    if (!newMatrix[m][n].flagged) {
       newMatrix[m][n].flagged = true;
-      if (newMatrix[m][n].hasBomb === true) {
+      if (newMatrix[m][n].hasBomb) {
         const newBombsFlagged = bombsFlagged + 1;
         setBombsFlagged(newBombsFlagged);
 
@@ -50,7 +54,7 @@ const App = () => {
       }
     } else {
       newMatrix[m][n].flagged = false;
-      if (newMatrix[m][n].hasBomb === true) {
+      if (newMatrix[m][n].hasBomb) {
         const newBombsFlagged = bombsFlagged - 1;
         setBombsFlagged(newBombsFlagged);
       } else {
