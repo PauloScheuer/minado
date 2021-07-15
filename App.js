@@ -44,10 +44,6 @@ const App = () => {
       if (newMatrix[m][n].hasBomb) {
         const newBombsFlagged = bombsFlagged + 1;
         setBombsFlagged(newBombsFlagged);
-
-        if (numberOfBombs === newBombsFlagged) {
-          handleWin();
-        }
       } else {
         const newFalseFlags = falseFlags + 1;
         setFalseFlags(newFalseFlags);
@@ -62,7 +58,6 @@ const App = () => {
         setFalseFlags(newFalseFlags);
       }
     }
-
     setMatrix(newMatrix);
   }
 
@@ -120,7 +115,14 @@ const App = () => {
 
   useEffect(() => {
     handleRestart();
-  }, [difficulty])
+  }, [difficulty]);
+
+  useEffect(() => {
+    if ((numberOfBombs === bombsFlagged) &&
+      (falseFlags === 0)) {
+      handleWin();
+    }
+  }, [bombsFlagged, falseFlags]);
 
   return (
     <View style={styles.container}>
